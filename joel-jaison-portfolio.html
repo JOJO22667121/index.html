@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Joel Jaison — Personal Chef</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #f5ede0;
+      --warm-white: #faf6f0;
+      --amber: #c8843a;
+      --amber-light: #e4a55a;
+      --brown-dark: #2e1a0e;
+      --brown-mid: #5c3d20;
+      --brown-light: #8b6340;
+      --sage: #7a8c6e;
+      --rust: #a84c2f;
+      --text: #2e1a0e;
+      --text-muted: #7a5c3e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--warm-white);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(250, 246, 240, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(200, 132, 58, 0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--brown-mid);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--amber); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--cream);
+      padding: 8rem 3rem 4rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 70% 50%, rgba(200, 132, 58, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 10% 80%, rgba(168, 76, 47, 0.08) 0%, transparent 50%);
+    }
+
+    .hero-decor {
+      position: absolute;
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 132, 58, 0.2);
+      animation: rotate 30s linear infinite;
+    }
+
+    .hero-decor::before {
+      content: '';
+      position: absolute;
+      inset: 30px;
+      border-radius: 50%;
+      border: 1px dashed rgba(200, 132, 58, 0.15);
+    }
+
+    @keyframes rotate { to { transform: translateY(-50%) rotate(360deg); } }
+
+    .hero-content {
+      max-width: 640px;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 1s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.08;
+      color: var(--brown-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--brown-light);
+      margin: 1.2rem 0 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.9rem 2.4rem;
+      background: var(--amber);
+      color: var(--warm-white);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--rust);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 0.9rem 2.4rem;
+      border: 1px solid var(--brown-light);
+      color: var(--brown-mid);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-left: 1rem;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 0 3rem;
+      margin: 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(200,132,58,0.3), transparent);
+    }
+
+    .divider-icon {
+      font-size: 1.2rem;
+      color: var(--amber-light);
+    }
+
+    /* ABOUT */
+    .about {
+      padding: 7rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-card {
+      background: var(--cream);
+      border: 1px solid rgba(200,132,58,0.2);
+      padding: 3rem;
+      position: relative;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: -10px; left: -10px;
+      right: 10px; bottom: 10px;
+      border: 1px solid rgba(200,132,58,0.12);
+      pointer-events: none;
+    }
+
+    .about-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--brown-dark);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-quote-attr {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .about-tag {
+      display: inline-block;
+      background: rgba(200,132,58,0.12);
+      color: var(--amber);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .about h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2;
+      color: var(--brown-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .about p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(200,132,58,0.2);
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--amber);
+      display: block;
+    }
+
+    .stat-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* SECTION HEADERS */
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--brown-dark);
+      line-height: 1.2;
+    }
+
+    /* CUISINE */
+    .cuisine {
+      background: var(--cream);
+      padding: 7rem 3rem;
+    }
+
+    .cuisine-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cuisine-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .cuisine-card {
+      background: var(--warm-white);
+      border: 1px solid rgba(200,132,58,0.15);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .cuisine-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(46,26,14,0.1);
+    }
+
+    .cuisine-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--amber);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .cuisine-card:hover::after { transform: scaleX(1); }
+
+    .cuisine-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .cuisine-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--brown-dark);
+      margin-bottom: 0.8rem;
+    }
+
+    .cuisine-card p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+
+    /* MENU */
+    .menu {
+      padding: 7rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 3rem;
+      border: 1px solid rgba(200,132,58,0.25);
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tab-btn {
+      padding: 0.75rem 2rem;
+      background: none;
+      border: none;
+      border-right: 1px solid rgba(200,132,58,0.25);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .tab-btn:last-child { border-right: none; }
+
+    .tab-btn.active,
+    .tab-btn:hover {
+      background: var(--amber);
+      color: white;
+    }
+
+    .menu-list {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(200,132,58,0.1);
+      border: 1px solid rgba(200,132,58,0.1);
+    }
+
+    .menu-list.active { display: grid; }
+
+    .menu-item {
+      background: var(--warm-white);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .menu-item-info h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--brown-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .menu-item-info p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .menu-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--amber);
+      white-space: nowrap;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      background: var(--brown-dark);
+      padding: 7rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonials::before {
+      content: '"';
+      position: absolute;
+      top: -2rem;
+      left: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 20rem;
+      color: rgba(200,132,58,0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .testimonials .section-eyebrow { color: var(--amber-light); }
+
+    .testimonials .section-header h2 { color: var(--cream); }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .testi-card {
+      border: 1px solid rgba(200,132,58,0.2);
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .testi-stars {
+      color: var(--amber);
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.1em;
+    }
+
+    .testi-text {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: rgba(245,237,224,0.8);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .testi-author {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber-light);
+    }
+
+    /* CONTACT */
+    .contact {
+      padding: 7rem 3rem;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--brown-dark);
+      margin-bottom: 1rem;
+    }
+
+    .contact p {
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 1.2rem;
+      text-align: left;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+    .form-group label {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.9rem 1.1rem;
+      background: var(--cream);
+      border: 1px solid rgba(200,132,58,0.25);
+      color: var(--text);
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--amber);
+    }
+
+    .form-group textarea { height: 120px; resize: vertical; }
+
+    .contact-form .btn-primary {
+      width: 100%;
+      text-align: center;
+      padding: 1.1rem;
+      font-size: 0.95rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--brown-dark);
+      color: rgba(245,237,224,0.5);
+      text-align: center;
+      padding: 2.5rem 3rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      border-top: 1px solid rgba(200,132,58,0.15);
+    }
+
+    footer span { color: var(--amber-light); }
+
+    /* FADE-IN ANIMATION */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+      .cuisine-grid { grid-template-columns: 1fr; }
+      .menu-list { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .hero-decor { display: none; }
+      .cuisine, .testimonials { padding: 5rem 1.5rem; }
+      .menu, .contact { padding: 5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Joel Jaison</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#cuisine">Cuisine</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#contact">Book</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-decor"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Personal Chef &amp; Culinary Artist</div>
+      <h1>Joel<br/><em>Jaison</em></h1>
+      <p class="hero-subtitle">Where rustic tradition meets modern American craft</p>
+      <p class="hero-desc">Rooted in the warmth of a British pub kitchen and refined through modern American cuisine, Joel brings honest, soulful cooking to your table — intimate dinners, private events, and bespoke culinary experiences.</p>
+      <a href="#contact" class="btn-primary">Book an Experience</a>
+      <a href="#menu" class="btn-outline">View Menu</a>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><span class="divider-icon">✦</span><div class="divider-line"></div></div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-visual fade-in">
+      <div class="about-card">
+        <p class="about-quote">"Food is memory, warmth, and story — every plate I send out should feel like coming home."</p>
+        <p class="about-quote-attr">— Joel Jaison</p>
+        <div class="about-stats">
+          <div>
+            <span class="stat-num">10+</span>
+            <span class="stat-label">Years in Kitchen</span>
+          </div>
+          <div>
+            <span class="stat-num">2</span>
+            <span class="stat-label">Culinary Roots</span>
+          </div>
+          <div>
+            <span class="stat-num">∞</span>
+            <span class="stat-label">Flavors to Explore</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-text fade-in">
+      <span class="about-tag">The Chef</span>
+      <h2>A Story Told Through Every Dish</h2>
+      <p>Joel Jaison's culinary journey began behind the bar and stoves of a traditional British pub — where honest ingredients, hearty portions, and community defined the kitchen's soul. That foundation gave him an appreciation for food that feeds more than just hunger.</p>
+      <p>From there, Joel refined his craft through modern American cuisine — bold flavors, seasonal sourcing, and creative plating that honors the ingredient above all. Today, he brings that fusion of comfort and creativity directly to your home or event.</p>
+      <p>Whether it's an intimate dinner for two or a curated tasting evening for twenty, every meal is personal, memorable, and unmistakably Joel.</p>
+    </div>
+  </section>
+
+  <!-- CUISINE -->
+  <section class="cuisine" id="cuisine">
+    <div class="cuisine-inner">
+      <div class="section-header fade-in">
+        <span class="section-eyebrow">Specialties</span>
+        <h2>What Joel Does Best</h2>
+      </div>
+      <div class="cuisine-grid">
+        <div class="cuisine-card fade-in">
+          <span class="cuisine-icon">🍺</span>
+          <h3>Pub-Rooted Comfort</h3>
+          <p>Born from years in a British pub kitchen — slow braises, hearty pies, hand-crafted sauces, and the kind of food that gathers people around a table and keeps them there.</p>
+        </div>
+        <div class="cuisine-card fade-in">
+          <span class="cuisine-icon">🌿</span>
+          <h3>Modern American</h3>
+          <p>Seasonal, local, and intentional. Dishes that celebrate American regional ingredients with a refined, contemporary touch — rustic soul, polished execution.</p>
+        </div>
+        <div class="cuisine-card fade-in">
+          <span class="cuisine-icon">🕯️</span>
+          <h3>Intimate Private Dining</h3>
+          <p>Custom menus crafted around you — your preferences, your story, your occasion. From a romantic dinner to a curated supper club, Joel handles every detail.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="menu">
+      <div class="section-header fade-in">
+        <span class="section-eyebrow">The Menu</span>
+        <h2>Seasonal Offerings</h2>
+      </div>
+      <div class="menu-tabs">
+        <button class="tab-btn active" onclick="showTab('starters')">Starters</button>
+        <button class="tab-btn" onclick="showTab('mains')">Mains</button>
+        <button class="tab-btn" onclick="showTab('desserts')">Desserts</button>
+      </div>
+
+      <div id="starters" class="menu-list active fade-in">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Smoked Trout Rillettes</h4>
+            <p>Toasted rye crisp, pickled cucumber, crème fraîche</p>
+          </div>
+          <div class="menu-price">$18</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Roasted Bone Marrow</h4>
+            <p>Chimichurri, sourdough toast, pickled shallots</p>
+          </div>
+          <div class="menu-price">$22</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Pub-Style Scotch Egg</h4>
+            <p>Heritage pork, grain mustard sauce, watercress</p>
+          </div>
+          <div class="menu-price">$16</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Heirloom Beet Salad</h4>
+            <p>Whipped goat cheese, candied walnuts, aged sherry vinaigrette</p>
+          </div>
+          <div class="menu-price">$14</div>
+        </div>
+      </div>
+
+      <div id="mains" class="menu-list fade-in">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Braised Short Rib</h4>
+            <p>Celery root purée, roasted root vegetables, red wine jus</p>
+          </div>
+          <div class="menu-price">$52</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Pan-Roasted Halibut</h4>
+            <p>Corn succotash, charred leek, herb beurre blanc</p>
+          </div>
+          <div class="menu-price">$46</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Duck Leg Confit</h4>
+            <p>White bean cassoulet, braised greens, duck jus</p>
+          </div>
+          <div class="menu-price">$48</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Wild Mushroom Risotto</h4>
+            <p>Truffle oil, aged parmesan, crispy shallots</p>
+          </div>
+          <div class="menu-price">$38</div>
+        </div>
+      </div>
+
+      <div id="desserts" class="menu-list fade-in">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Sticky Toffee Pudding</h4>
+            <p>Warm butterscotch sauce, vanilla clotted cream</p>
+          </div>
+          <div class="menu-price">$14</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Apple Tarte Tatin</h4>
+            <p>Caramelized Fuji apple, crème fraîche, cider caramel</p>
+          </div>
+          <div class="menu-price">$13</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Bourbon Chocolate Pot</h4>
+            <p>Sea salt, cocoa nib brittle, chantilly</p>
+          </div>
+          <div class="menu-price">$15</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <h4>Seasonal Cheese Board</h4>
+            <p>Rotating selection, honeycomb, artisan crackers, preserve</p>
+          </div>
+          <div class="menu-price">$22</div>
+        </div>
+      </div>
+
+      <p style="text-align:center; margin-top:1.5rem; font-style:italic; color:var(--text-muted); font-size:0.9rem;">All menus are fully customizable. Dietary restrictions warmly accommodated.</p>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-header fade-in">
+      <span class="section-eyebrow">Kind Words</span>
+      <h2 style="color:var(--cream);">What Guests Say</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Joel turned our anniversary dinner into something we'll never forget. The braised short rib was extraordinary — restaurant quality, but so much more personal."</p>
+        <p class="testi-author">— Sarah M., Private Dinner Guest</p>
+      </div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"We hired Joel for a dinner party of 12 and he was incredible. The menu felt both familiar and exciting. Our guests are still talking about it weeks later."</p>
+        <p class="testi-author">— The Hartley Family, Dinner Party</p>
+      </div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"That sticky toffee pudding alone is worth every penny. Joel has a rare gift — he makes food that feels like a warm hug. Absolutely book him."</p>
+        <p class="testi-author">— James R., Corporate Event</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="section-header fade-in">
+      <span class="section-eyebrow">Get in Touch</span>
+    </div>
+    <h2 class="fade-in">Book Your Experience</h2>
+    <p class="fade-in">Ready to bring Joel's cooking to your table? Fill out the form below and he'll be in touch within 24 hours to discuss your vision.</p>
+    <div class="contact-form fade-in">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Jane"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Smith"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="jane@example.com"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Event Type</label>
+          <select>
+            <option>Private Dinner</option>
+            <option>Dinner Party</option>
+            <option>Corporate Event</option>
+            <option>Tasting Menu</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Number of Guests</label>
+          <input type="number" placeholder="4"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tell Joel About Your Vision</label>
+        <textarea placeholder="Dietary preferences, occasion, date ideas..."></textarea>
+      </div>
+      <button class="btn-primary">Send Enquiry</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 <span>Joel Jaison</span> — Personal Chef &amp; Culinary Artist &nbsp;·&nbsp; Crafted with care</p>
+  </footer>
+
+  <script>
+    // Tab switching
+    function showTab(tab) {
+      document.querySelectorAll('.menu-list').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Scroll fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
